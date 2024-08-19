@@ -17,6 +17,7 @@ export const fetchFromOTDB = async (
       `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}&type=${type}`,
       options
     );
+    console.log("respons", response.data);
     return response.data;
   } catch (error) {
     console.log("Error in fetchFromOTDB " + error.message);

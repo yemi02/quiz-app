@@ -7,3 +7,11 @@ body {
   height: 100vh;
   width: 100%;
 }
+
+.correct {
+  background: #9aeabc;
+}
+
+.incorrect {
+  background: #ff9393;
+}
