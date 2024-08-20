@@ -1,15 +1,22 @@
-const ArrowButtons = ({ questionIdx, setQuestionIdx, results }) => {
+import useTrivia from "../hooks/useTrivia";
+import useTriviaStore from "../store/triviaStore";
+
+const ArrowButtons = () => {
+  const { getFromOTDB, trivia, triviaLength } = useTrivia();
+  const { questionIdx, setQuestionIdx, hasBeenAnswered, setHasBeenAnswered } =
+    useTriviaStore();
+
   const moveLeft = () => {
     if (questionIdx === 0) return;
-    setQuestionIdx((prev) => prev - 1);
+    setQuestionIdx(questionIdx - 1);
   };
   const moveRight = () => {
-    if (questionIdx === results.length - 1) return;
-    setQuestionIdx((prev) => prev + 1);
+    if (questionIdx === triviaLength - 1) return;
+    setQuestionIdx(questionIdx + 1);
   };
   return (
     <>
-      {results.length !== 0 ? (
+      {triviaLength !== 0 ? (
         <div>
           <button
             onClick={moveLeft}
@@ -25,7 +32,7 @@ const ArrowButtons = ({ questionIdx, setQuestionIdx, results }) => {
           <button
             onClick={moveRight}
             className={`p-1 absolute top-1/2 right-10 bg-blue-900/50 rounded-full ${
-              questionIdx === results.length - 1
+              questionIdx === triviaLength - 1
                 ? "cursor-not-allowed hover:bg-blue-900/75 rounded-full"
                 : "cursor-pointer"
             }`}
