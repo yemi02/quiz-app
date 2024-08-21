@@ -14,7 +14,6 @@ const useTrivia = () => {
 
   const [trivia, setTrivia] = useState("");
   const [triviaLength, setTriviaLength] = useState("");
-  const [answers, setAnswers] = useState([]);
 
   const hasFetched = useRef(false);
 
@@ -32,36 +31,18 @@ const useTrivia = () => {
   };
 
   useEffect(() => {
-    const getQuestionAndAnswers = () => {
-      if (trivias?.length === 0) {
-        setAnswers([]);
-        return;
-      }
-
+    const getTrivia = () => {
       const trivia = trivias?.[questionIdx];
 
       if (trivia) {
-        const incorrectAnswers = trivia?.incorrect_answers.map((answer) => {
-          return { isCorrect: false, answer: answer, clicked: false };
-        });
         setTrivia(trivia);
         setTriviaLength(trivias.length);
-        const correctAnswer = {
-          isCorrect: true,
-          answer: trivia?.correct_answer,
-          clicked: false,
-        };
-        const answersArr = [...incorrectAnswers, correctAnswer];
-        const shuffledArr = answersArr.slice().sort(() => Math.random() - 0.5);
-        setAnswers(shuffledArr);
       }
     };
-    console.log(trivias, "trivias");
-
-    getQuestionAndAnswers();
+    getTrivia();
   }, [trivias, questionIdx]);
 
-  return { getFromOTDB, triviaLength, trivia, answers };
+  return { getFromOTDB, triviaLength, trivia };
 };
 
 export default useTrivia;
