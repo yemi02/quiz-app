@@ -5,7 +5,13 @@ import useTriviaStore from "../store/triviaStore";
 
 const Card = () => {
   const [answers, setAnswers] = useState([]);
-  const { questionIdx, hasBeenAnswered, setHasBeenAnswered } = useTriviaStore();
+  const {
+    trivias,
+    setTrivias,
+    questionIdx,
+    hasBeenAnswered,
+    setHasBeenAnswered,
+  } = useTriviaStore();
   const { trivia, triviaLength } = useTrivia();
 
   useEffect(() => {
@@ -15,6 +21,11 @@ const Card = () => {
         return;
       }
       if (trivia) {
+        if (trivia.answers) {
+          setAnswers(trivia.answers);
+          return;
+        }
+        console.log("yes");
         const incorrectAnswers = trivia?.incorrect_answers.map((answer) => {
           return { isCorrect: false, answer: answer, clicked: false };
         });
@@ -25,6 +36,7 @@ const Card = () => {
         };
         const answersArr = [...incorrectAnswers, correctAnswer];
         const shuffledArr = answersArr.slice().sort(() => Math.random() - 0.5);
+
         setAnswers(shuffledArr);
       }
     };
@@ -38,9 +50,16 @@ const Card = () => {
       return idx === index ? { ...answer, clicked: true } : answer;
     });
     setAnswers(updatedAnswers);
+    if (!trivia) return;
+    const newTrivia = { ...trivias[questionIdx], answers: updatedAnswers };
+    const newTrivias = trivias;
+    newTrivias[questionIdx] = newTrivia;
+    setTrivias(newTrivias);
   };
 
-  console.log(answers);
+  console.log(trivia);
+  // console.log(trivias);
+  // console.log(answers);
 
   return (
     <>
@@ -61,9 +80,8 @@ const Card = () => {
                   ? "correct"
                   : ""
               } ${!hasBeenAnswered[questionIdx] ? "hover:bg-blue-900" : ""} ${
-                hasBeenAnswered && answer.clicked
-                  ? !answer.isCorrect && "incorrect"
-                  : ""
+                hasBeenAnswered &&
+                (answer.clicked ? !answer.isCorrect && "incorrect" : "")
               }`}
             >
               <span

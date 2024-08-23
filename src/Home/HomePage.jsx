@@ -5,7 +5,7 @@ import ArrowButtons from "./ArrowButtons";
 import useTrivia from "../hooks/useTrivia";
 
 const HomePage = () => {
-  const { getFromOTDB, trivia, triviaLength, answers } = useTrivia();
+  const { getFromOTDB, trivia, triviaLength } = useTrivia();
 
   useEffect(() => {
     getFromOTDB();
